@@ -1,4 +1,6 @@
+DROP DATABASE IF EXISTS financial;
 CREATE SCHEMA financial;
+USE financial;
 
 CREATE TABLE Bank (
   bank_id int(10) NOT NULL,
