@@ -1,3 +1,4 @@
+USE financial;
 INSERT INTO `Bank` (`bank_id`, `bank_name`) VALUES
 (113163645, 'First Colonial Bank for Savings'),
 (118440214, 'Hacienda Federal Savings and Loan Association'),
