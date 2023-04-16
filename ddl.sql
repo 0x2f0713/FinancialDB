@@ -53,7 +53,7 @@ CREATE TABLE Accounts (
 );
 
 CREATE TABLE Deposit (
-  trans_id int(10) NOT NULL,
+  trans_id int(10) NOT NULL AUTO_INCREMENT,
   trans_amount decimal(10,2) NOT NULL,
   account_num int,
   trans_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -63,7 +63,7 @@ CREATE TABLE Deposit (
 );
 
 CREATE TABLE Withdraw (
-  trans_id int(10) NOT NULL,
+  trans_id int(10) NOT NULL AUTO_INCREMENT,
   trans_amount decimal(10,2) NOT NULL,
   account_num int,
   trans_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -85,3 +85,32 @@ AFTER INSERT ON Withdraw FOR EACH ROW
 UPDATE Accounts
 SET balance = balance - NEW.trans_amount
 WHERE NEW.account_num = Accounts.account_num;
+
+
+DELIMITER $$
+CREATE FUNCTION deposit(amount decimal(10,2), account int)
+RETURNS INT
+BEGIN
+	DECLARE trans_id INT;
+	INSERT INTO `Deposit` (`trans_amount`, `account_num`) VALUES
+	(amount, account);
+	SET trans_id = LAST_INSERT_ID();
+	RETURN trans_id;
+END;
+$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION withdraw(amount decimal(10,2), account int)
+RETURNS INT
+BEGIN
+	DECLARE trans_id INT;
+	INSERT INTO `Withdraw` (`trans_amount`, `account_num`) VALUES
+	(amount, account);
+	SET trans_id = LAST_INSERT_ID();
+	RETURN trans_id;
+END;
+$$
+DELIMITER ;
+
+
